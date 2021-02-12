@@ -19,69 +19,19 @@ import {
   SimpleGrid
 } from '@chakra-ui/react';
 import Form from '../components/Form';
-
-const quetions = [
-  {
-    name: 'name',
-    title: 'como es la casa donde vives?',
-    options: [
-      { label: 'Casa pequeña o Apartamento' },
-      { label: 'Casa con terraza' },
-      { label: 'Casa con jardín' }
-    ]
-  },
-  {
-    name: 'othe',
-    title: 'Cuantas horas estas fuera de casa',
-    options: [
-      { label: 'Menos de 5 horas' },
-      { label: 'Mas de 5 horas' },
-    ]
-  },
-  {
-    name: 'sadsad',
-    title: '¿Qué te gusta hacer en tu tiempo libre?',
-    options: [
-      { label: 'Soy hogareño y disfruto de la tranquilidad' },
-      { label: 'Me gusta disfrutar de la comprañia de mi familia' },
-      { label: 'Me encanta el deporte y las actividades al aire libre' }
-    ]
-  },
-  {
-    name: 'sadqdwsad',
-    title: '¿Con quién compartes tu hogar?',
-    options: [
-      { label: 'Con mi familia' },
-      { label: 'Vivo solo/a' },
-      { label: 'Con mi pareja' }
-    ]
-  },
-  {
-    name: 'qsdwwwqd',
-    title: '¿Por qué te gustaría tener un perro?',
-    options: [
-      { label: 'Por la compañia' },
-      { label: 'Para que proteja mi casa' },
-      { label: 'Para entrenar con el' },
-      { label: 'Para salir a pasear' }
-    ]
-  },
-  {
-    name: '213qsdwwwqd',
-    title: '¿Cualidades de tu perro ideal?',
-    options: [
-      { label: 'Por la compañia' },
-      { label: 'Para que proteja mi casa' },
-      { label: 'Para entrenar con el' },
-      { label: 'Para salir a pasear' }
-    ]
-  }
-]
+import BreedDetails from '../components/BreedDetails';
+import { useSubBreeds } from '../lib/useSubBreeds';
+import { quetions } from '../data/quetions';
 
 export default function Home() {
   const [index, setIndex] = useState(0);
+  const [isPreview, setPreview] = useState(false);
+  const [selected, setSelected] = useState({});
+  const { isLoading, subBreeds } = useSubBreeds();
 
   const handleIndex = index => setIndex(index);
+  const handlePreview = () => setPreview(p => !p);
+  const handleSelectBreed = breed => setSelected(breed);
 
   return (
     <div maxW="lg" centerContent>
@@ -147,38 +97,56 @@ export default function Home() {
       </Tabs>
       <Divider mt="10" />
       <Center>
-        <Heading mt="25">Resultados</Heading>
+        <Heading mt="25">Razas</Heading>
       </Center>
-      <Divider mt="10" />
 
       <SimpleGrid
-        columns={4}
+        mt="5"
+        columns={3}
         spacing={4}
       >
-        {quetions.map((_, index) => (
+        {subBreeds.map(subBreed => (
             <LinkBox
+              onClick={() => {
+                handleSelectBreed(subBreed);
+                handlePreview();
+              }}
               as="article"
               maxW="sm"
               p="5"
               borderWidth="1px"
               rounded="md"
-              key={index}
+              key={subBreed.id}
             >
               <Heading size="md" my="2">
-                <LinkOverlay href="#">
-                  Nombre de la raza
+                <LinkOverlay href="#" isTruncated>
+                  {subBreed.name}
                 </LinkOverlay>
               </Heading>
-              <Text mb="3">
-                description corta xD
+              <Text mb="3" isTruncated noOfLines="3">
+                {subBreed.short_description}
               </Text>
-              <Box as="a" color="teal.400" href="#" fontWeight="bold">
+              <Box
+                as="a"
+                color="teal.400"
+                fontWeight="bold"
+              >
                 Abrir modal
               </Box>
             </LinkBox>
           ))
         }
       </SimpleGrid>
+
+      {/* breed details */}
+      <BreedDetails
+        isOpen={isPreview}
+        onClose={() => {
+          handleSelectBreed({});
+          handlePreview();
+        }}
+        breed={selected}
+      />
     </div>
   );
 }

@@ -13,7 +13,8 @@ function MyApp({ Component, pageProps }) {
       >
         <ColorModeProvider
           options={{
-            useSystemColorMode: true
+            initialColorMode: 'light',
+            useSystemColorMode: false
           }}
         >
           <Container maxW="1140px">
