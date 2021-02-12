@@ -1,65 +1,152 @@
-import Head from 'next/head';
-import styles from '../styles/Home.module.css';
+import { useState } from 'react';
+import {
+  Center,
+  Tabs,
+  Container,
+  TabList,
+  TabPanel,
+  Tab,
+  TabPanels,
+  Button,
+  Stack,
+  Collapse,
+  Divider,
+  Heading,
+  LinkBox,
+  LinkOverlay,
+  Text,
+  Box,
+  SimpleGrid
+} from '@chakra-ui/react';
+import Form from '../components/Form';
+import BreedDetails from '../components/BreedDetails';
+import { useSubBreeds } from '../lib/useSubBreeds';
+import { quetions } from '../data/quetions';
 
 export default function Home() {
+  const [index, setIndex] = useState(0);
+  const [isPreview, setPreview] = useState(false);
+  const [selected, setSelected] = useState({});
+  const { isLoading, subBreeds } = useSubBreeds();
+
+  const handleIndex = index => setIndex(index);
+  const handlePreview = () => setPreview(p => !p);
+  const handleSelectBreed = breed => setSelected(breed);
+
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <div maxW="lg" centerContent>
+      <Tabs index={index} variant="soft-rounded">
+        <Center>
+          <TabList>
+            {quetions.map((_, index) => (
+              <Tab key={`tab-index-${index}`} isDisabled>{index + 1}</Tab>
+            ))}
+          </TabList>
+        </Center>
+        <TabPanels>
+          { quetions.map(quetion => (
+              <TabPanel key={`quietion-key-${quetion.name}`}>
+                <Form
+                  name={quetion.name}
+                  title={quetion.title}
+                  options={quetion.options}
+                />
+              </TabPanel>
+            ))
+          }
+        </TabPanels>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+        <Container>
+          <Collapse in={index >= quetions.length - 1}>
+            <Stack spacing={4}>
+              <Button
+                color="white"
+                colorScheme="green"
+                type="submit"
+                width="100%"
+                onClick={() => handleIndex(index - 1)}
+              >
+                Buscar
+              </Button>
+            </Stack>
+          </Collapse>
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
+          <Collapse in={index < quetions.length - 1}>
+            <Stack direction="row" spacing={4}>
+              <Button
+                color="white"
+                colorScheme="red"
+                width="100%"
+                isDisabled={index <= 0}
+                onClick={() => handleIndex(index - 1)}
+              >
+                anterior
+              </Button>
+              <Button
+                color="white"
+                colorScheme="blue"
+                width="100%"
+                isDisabled={index >= quetions.length - 1}
+                onClick={() => handleIndex(index + 1)}
+              >
+                proxima
+              </Button>
+            </Stack>
+          </Collapse>
+        </Container>
+      </Tabs>
+      <Divider mt="10" />
+      <Center>
+        <Heading mt="25">Razas</Heading>
+      </Center>
 
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
+      <SimpleGrid
+        mt="5"
+        columns={3}
+        spacing={4}
+      >
+        {subBreeds.map(subBreed => (
+            <LinkBox
+              onClick={() => {
+                handleSelectBreed(subBreed);
+                handlePreview();
+              }}
+              as="article"
+              maxW="sm"
+              p="5"
+              borderWidth="1px"
+              rounded="md"
+              key={subBreed.id}
+            >
+              <Heading size="md" my="2">
+                <LinkOverlay href="#" isTruncated>
+                  {subBreed.name}
+                </LinkOverlay>
+              </Heading>
+              <Text mb="3" isTruncated noOfLines="3">
+                {subBreed.short_description}
+              </Text>
+              <Box
+                as="a"
+                color="teal.400"
+                fontWeight="bold"
+              >
+                Abrir modal
+              </Box>
+            </LinkBox>
+          ))
+        }
+      </SimpleGrid>
 
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
+      {/* breed details */}
+      <BreedDetails
+        isOpen={isPreview}
+        onClose={() => {
+          handleSelectBreed({});
+          handlePreview();
+        }}
+        breed={selected}
+      />
     </div>
   );
 }
