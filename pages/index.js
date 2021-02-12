@@ -1,65 +1,184 @@
-import Head from 'next/head';
-import styles from '../styles/Home.module.css';
+import { useState } from 'react';
+import {
+  Center,
+  Tabs,
+  Container,
+  TabList,
+  TabPanel,
+  Tab,
+  TabPanels,
+  Button,
+  Stack,
+  Collapse,
+  Divider,
+  Heading,
+  LinkBox,
+  LinkOverlay,
+  Text,
+  Box,
+  SimpleGrid
+} from '@chakra-ui/react';
+import Form from '../components/Form';
+
+const quetions = [
+  {
+    name: 'name',
+    title: 'como es la casa donde vives?',
+    options: [
+      { label: 'Casa pequeña o Apartamento' },
+      { label: 'Casa con terraza' },
+      { label: 'Casa con jardín' }
+    ]
+  },
+  {
+    name: 'othe',
+    title: 'Cuantas horas estas fuera de casa',
+    options: [
+      { label: 'Menos de 5 horas' },
+      { label: 'Mas de 5 horas' },
+    ]
+  },
+  {
+    name: 'sadsad',
+    title: '¿Qué te gusta hacer en tu tiempo libre?',
+    options: [
+      { label: 'Soy hogareño y disfruto de la tranquilidad' },
+      { label: 'Me gusta disfrutar de la comprañia de mi familia' },
+      { label: 'Me encanta el deporte y las actividades al aire libre' }
+    ]
+  },
+  {
+    name: 'sadqdwsad',
+    title: '¿Con quién compartes tu hogar?',
+    options: [
+      { label: 'Con mi familia' },
+      { label: 'Vivo solo/a' },
+      { label: 'Con mi pareja' }
+    ]
+  },
+  {
+    name: 'qsdwwwqd',
+    title: '¿Por qué te gustaría tener un perro?',
+    options: [
+      { label: 'Por la compañia' },
+      { label: 'Para que proteja mi casa' },
+      { label: 'Para entrenar con el' },
+      { label: 'Para salir a pasear' }
+    ]
+  },
+  {
+    name: '213qsdwwwqd',
+    title: '¿Cualidades de tu perro ideal?',
+    options: [
+      { label: 'Por la compañia' },
+      { label: 'Para que proteja mi casa' },
+      { label: 'Para entrenar con el' },
+      { label: 'Para salir a pasear' }
+    ]
+  }
+]
 
 export default function Home() {
+  const [index, setIndex] = useState(0);
+
+  const handleIndex = index => setIndex(index);
+
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <div maxW="lg" centerContent>
+      <Tabs index={index} variant="soft-rounded">
+        <Center>
+          <TabList>
+            {quetions.map((_, index) => (
+              <Tab key={`tab-index-${index}`} isDisabled>{index + 1}</Tab>
+            ))}
+          </TabList>
+        </Center>
+        <TabPanels>
+          { quetions.map(quetion => (
+              <TabPanel key={`quietion-key-${quetion.name}`}>
+                <Form
+                  name={quetion.name}
+                  title={quetion.title}
+                  options={quetion.options}
+                />
+              </TabPanel>
+            ))
+          }
+        </TabPanels>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+        <Container>
+          <Collapse in={index >= quetions.length - 1}>
+            <Stack spacing={4}>
+              <Button
+                color="white"
+                colorScheme="green"
+                type="submit"
+                width="100%"
+                onClick={() => handleIndex(index - 1)}
+              >
+                Buscar
+              </Button>
+            </Stack>
+          </Collapse>
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
+          <Collapse in={index < quetions.length - 1}>
+            <Stack direction="row" spacing={4}>
+              <Button
+                color="white"
+                colorScheme="red"
+                width="100%"
+                isDisabled={index <= 0}
+                onClick={() => handleIndex(index - 1)}
+              >
+                anterior
+              </Button>
+              <Button
+                color="white"
+                colorScheme="blue"
+                width="100%"
+                isDisabled={index >= quetions.length - 1}
+                onClick={() => handleIndex(index + 1)}
+              >
+                proxima
+              </Button>
+            </Stack>
+          </Collapse>
+        </Container>
+      </Tabs>
+      <Divider mt="10" />
+      <Center>
+        <Heading mt="25">Resultados</Heading>
+      </Center>
+      <Divider mt="10" />
 
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
+      <SimpleGrid
+        columns={4}
+        spacing={4}
+      >
+        {quetions.map((_, index) => (
+            <LinkBox
+              as="article"
+              maxW="sm"
+              p="5"
+              borderWidth="1px"
+              rounded="md"
+              key={index}
+            >
+              <Heading size="md" my="2">
+                <LinkOverlay href="#">
+                  Nombre de la raza
+                </LinkOverlay>
+              </Heading>
+              <Text mb="3">
+                description corta xD
+              </Text>
+              <Box as="a" color="teal.400" href="#" fontWeight="bold">
+                Abrir modal
+              </Box>
+            </LinkBox>
+          ))
+        }
+      </SimpleGrid>
     </div>
   );
 }
