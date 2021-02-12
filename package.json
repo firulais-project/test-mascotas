@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "prettier:format": "npx prettier --write .",
+    "prettier:check": "npx prettier --check ."
   },
   "husky": {
     "hooks": {
