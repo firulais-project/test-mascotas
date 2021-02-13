@@ -12,7 +12,10 @@ import {
 
 const Form = ({
   title,
-  options
+  name,
+  options,
+  onChange,
+  defaultValue
 }) => {
   return (
     <Flex justifyContent="center" mt="25">
@@ -25,10 +28,18 @@ const Form = ({
         </Center>
         <Divider />
         <form>
-          <RadioGroup>
+          <RadioGroup
+            onChange={onChange(name)}
+            defaultValue={defaultValue}
+          >
             <Stack spacing="20px" mt="5">
-              { options.map(option => (
-                  <Radio>{option.label}</Radio>
+              { options.map((option) => (
+                  <Radio
+                    value={Array.isArray(option.value) ? option.value.join(',') : `${option.value}`}
+                    // defaultChecked={index + 1 === defaultValue}
+                  >
+                    {option.label}
+                  </Radio>
                 ))
               }
             </Stack>
