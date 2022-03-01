@@ -1,6 +1,6 @@
 module.exports = {
   env: {
     api_url: 'http://localhost:8080/api',
-    breed: 'a637156a-ba0a-4d99-b9b3-d560de189f49'
+    breed: 'e6a0dae-2bf6-4884-8f9e-7852601867df'
   },
 };

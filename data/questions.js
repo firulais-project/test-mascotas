@@ -1,5 +1,5 @@
 module.exports = {
-  quetions: [
+  questions: [
     {
       name: 's',
       title: 'Tu primera mascota',
@@ -70,7 +70,7 @@ module.exports = {
       options: [
         {
           label: 'Vivo solo/a',
-          values: [
+          value: [
             'es posible que no se lleve bien con los niños',
             'gran compañero',
             'un gran perro guardián'
@@ -78,7 +78,7 @@ module.exports = {
         },
         {
           label: 'Con mi pareja o familia',
-          values: [
+          value: [
             'necesita mucha interacción con el hombre.',
             'gran compañero',
             'un gran perro guardián'
@@ -92,7 +92,7 @@ module.exports = {
       options: [
         {
           label: 'Compañia',
-          values: [
+          value: [
             'es posible que no se lleve bien con los niños',
             'gran compañero',
             'les gusta mucho que los acicalen.'
@@ -100,7 +100,7 @@ module.exports = {
         },
         {
           label: 'Proteja mi casa',
-          values: [
+          value: [
             'un gran perro guardián'
           ]
         },
@@ -113,51 +113,5 @@ module.exports = {
         }
       ]
     }
-    // {
-    //   name: 'othe',
-    //   title: 'Cuantas horas estas fuera de casa',
-    //   options: [
-    //     { label: 'Menos de 5 horas' },
-    //     { label: 'Mas de 5 horas' },
-    //   ]
-    // },
-    // {
-    //   name: 'sadsad',
-    //   title: '¿Qué te gusta hacer en tu tiempo libre?',
-    //   options: [
-    //     { label: 'Soy hogareño y disfruto de la tranquilidad' },
-    //     { label: 'Me gusta disfrutar de la comprañia de mi familia' },
-    //     { label: 'Me encanta el deporte y las actividades al aire libre' }
-    //   ]
-    // },
-    // {
-    //   name: 'sadqdwsad',
-    //   title: '¿Con quién compartes tu hogar?',
-    //   options: [
-    //     { label: 'Con mi familia' },
-    //     { label: 'Vivo solo/a' },
-    //     { label: 'Con mi pareja' }
-    //   ]
-    // },
-    // {
-    //   name: 'qsdwwwqd',
-    //   title: '¿Por qué te gustaría tener un perro?',
-    //   options: [
-    //     { label: 'Por la compañia' },
-    //     { label: 'Para que proteja mi casa' },
-    //     { label: 'Para entrenar con el' },
-    //     { label: 'Para salir a pasear' }
-    //   ]
-    // },
-    // {
-    //   name: '213qsdwwwqd',
-    //   title: '¿Cualidades de tu perro ideal?',
-    //   options: [
-    //     { label: 'Por la compañia' },
-    //     { label: 'Para que proteja mi casa' },
-    //     { label: 'Para entrenar con el' },
-    //     { label: 'Para salir a pasear' }
-    //   ]
-    // }
   ]
 }

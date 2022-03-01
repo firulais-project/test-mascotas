@@ -21,13 +21,14 @@ import {
 import Form from '../components/Form';
 import BreedDetails from '../components/BreedDetails';
 import { useSubBreeds } from '../lib/useSubBreeds';
-import { quetions } from '../data/quetions';
+import { questions } from '../data/questions';
 
 export default function Home() {
   const [index, setIndex] = useState(0);
   const [isPreview, setPreview] = useState(false);
   const [selected, setSelected] = useState({});
   const [filtered, setFiltered] = useState([]);
+  const [wasFilter, setWasFilter] = useState(false);
   const { isLoading, subBreeds } = useSubBreeds();
 
   // data filter
@@ -62,6 +63,18 @@ export default function Home() {
     });
 
     setFiltered(s);
+    setWasFilter(true);
+  }
+
+  const resetFilter = async () => {
+    await Promise.all([
+      setFiltered([]),
+      setWasFilter(true),
+      setPreview(false),
+      setIndex(0),
+      setFilter({}),
+      setSelected({}),
+    ]);
   }
 
   return (
@@ -69,21 +82,20 @@ export default function Home() {
       <Tabs index={index} variant="soft-rounded">
         <Center>
           <TabList>
-            {quetions.map((_, index) => (
+            {questions.map((_, index) => (
               <Tab key={`tab-index-${index}`} isDisabled>{index + 1}</Tab>
             ))}
           </TabList>
         </Center>
-        { JSON.stringify(filter) }
         <TabPanels>
-          { quetions.map(quetion => (
-              <TabPanel key={`quietion-key-${quetion.name}`}>
+          { questions.map(question => (
+              <TabPanel key={`quietion-key-${question.name}`}>
                 <Form
-                  name={quetion.name}
-                  title={quetion.title}
-                  options={quetion.options}
+                  name={question.name}
+                  title={question.title}
+                  options={question.options}
                   onChange={handleChange}
-                  defaultValue={filter[quetion.name]}
+                  defaultValue={filter[question.name]}
                 />
               </TabPanel>
             ))
@@ -91,21 +103,21 @@ export default function Home() {
         </TabPanels>
 
         <Container>
-          <Collapse in={index >= quetions.length - 1}>
+          <Collapse in={index >= questions.length - 1}>
             <Stack spacing={4}>
               <Button
                 color="white"
-                colorScheme="green"
+                colorScheme={wasFilter ? "orange" : "green"}
                 type="submit"
                 width="100%"
-                onClick={filterBreeds}
+                onClick={wasFilter ? filterBreeds : resetFilter}
               >
-                Buscar
+                {wasFilter ? "Reintentar" : "Buscar"}
               </Button>
             </Stack>
           </Collapse>
 
-          <Collapse in={index < quetions.length - 1}>
+          <Collapse in={index < questions.length - 1}>
             <Stack direction="row" spacing={4}>
               <Button
                 color="white"
@@ -120,7 +132,7 @@ export default function Home() {
                 color="white"
                 colorScheme="blue"
                 width="100%"
-                isDisabled={index >= quetions.length - 1}
+                isDisabled={index >= questions.length - 1}
                 onClick={() => handleIndex(index + 1)}
               >
                 proxima
