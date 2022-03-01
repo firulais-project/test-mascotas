@@ -6,11 +6,11 @@ import '../styles/globals.css';
 function MyApp({ Component, pageProps }) {
   return (
     <>
-      <Header />
       <ChakraProvider
         reactCSS
         theme={theme}
       >
+        <Header />
         <ColorModeProvider
           options={{
             initialColorMode: 'light',

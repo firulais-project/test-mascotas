@@ -91,10 +91,14 @@ export default function BreedDetails({ breed, onClose, isOpen }) {
                   <strong>Años de vida (Apox.):</strong> <Kbd>{breed.lifetime}</Kbd>
                 </Text>
 
-                <Divider mt="5" />
-                <Heading size="md" my="2">
-                  Mas detalles
-                </Heading>
+                { keywords.length >= 1 && (
+                  <>
+                    <Divider mt="5" />
+                    <Heading size="md" my="2">
+                      Mas detalles
+                    </Heading>
+                  </>
+                )}
 
                 {/* more details */}
                 <UnorderedList spacing={3}>

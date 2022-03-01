@@ -22,6 +22,7 @@ import Form from '../components/Form';
 import BreedDetails from '../components/BreedDetails';
 import { useSubBreeds } from '../lib/useSubBreeds';
 import { questions } from '../data/questions';
+import LazyLoad from 'react-lazyload';
 
 export default function Home() {
   const [index, setIndex] = useState(0);
@@ -69,7 +70,7 @@ export default function Home() {
   const resetFilter = async () => {
     await Promise.all([
       setFiltered([]),
-      setWasFilter(true),
+      setWasFilter(false),
       setPreview(false),
       setIndex(0),
       setFilter({}),
@@ -110,7 +111,7 @@ export default function Home() {
                 colorScheme={wasFilter ? "orange" : "green"}
                 type="submit"
                 width="100%"
-                onClick={wasFilter ? filterBreeds : resetFilter}
+                onClick={wasFilter ? resetFilter : filterBreeds}
               >
                 {wasFilter ? "Reintentar" : "Buscar"}
               </Button>
@@ -143,14 +144,16 @@ export default function Home() {
       </Tabs>
       <Divider mt="10" />
       
-      <Center>
-        <Heading mt="25">Filtradas</Heading>
-      </Center>
+     { filtered.length >= 1 && (
+        <Center>
+          <Heading mt="25">Filtradas</Heading>
+        </Center>
+     )}
 
       <SimpleGrid
         mt="5"
-        columns={3}
         spacing={4}
+        minChildWidth="300px"
       >
         {filtered.map(subBreed => (
             <LinkBox
@@ -193,38 +196,41 @@ export default function Home() {
 
       <SimpleGrid
         mt="5"
-        columns={3}
         spacing={4}
+        minChildWidth="300px"
+        className="list"
       >
         {subBreeds.map(subBreed => (
-            <LinkBox
-              onClick={() => {
-                handleSelectBreed(subBreed);
-                handlePreview();
-              }}
-              as="article"
-              maxW="sm"
-              p="5"
-              borderWidth="1px"
-              rounded="md"
-              key={subBreed.id}
-            >
-              <Heading size="md" my="2">
-                <LinkOverlay href="#" isTruncated>
-                  {subBreed.name}
-                </LinkOverlay>
-              </Heading>
-              <Text mb="3" isTruncated noOfLines="3">
-                {subBreed.short_description}
-              </Text>
-              <Box
-                as="a"
-                color="teal.400"
-                fontWeight="bold"
+            <LazyLoad>
+              <LinkBox
+                onClick={() => {
+                  handleSelectBreed(subBreed);
+                  handlePreview();
+                }}
+                as="article"
+                maxW="sm"
+                p="5"
+                borderWidth="1px"
+                rounded="md"
+                key={subBreed.id}
               >
-                Abrir modal
-              </Box>
-            </LinkBox>
+                <Heading size="md" my="2">
+                  <LinkOverlay href="#" isTruncated>
+                    {subBreed.name}
+                  </LinkOverlay>
+                </Heading>
+                <Text mb="3" isTruncated noOfLines="3">
+                  {subBreed.short_description}
+                </Text>
+                <Box
+                  as="a"
+                  color="teal.400"
+                  fontWeight="bold"
+                >
+                  Abrir modal
+                </Box>
+              </LinkBox>
+            </LazyLoad>
           ))
         }
       </SimpleGrid>
