@@ -36,7 +36,6 @@ const Form = ({
               { options.map((option) => (
                   <Radio
                     value={Array.isArray(option.value) ? option.value.join(',') : `${option.value}`}
-                    // defaultChecked={index + 1 === defaultValue}
                   >
                     {option.label}
                   </Radio>

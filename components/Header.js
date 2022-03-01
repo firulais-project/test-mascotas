@@ -10,7 +10,7 @@ const Header = () => {
             <NextLink href="/">
               <Link px={8} color="black" cursor="pointer">
                 <Flex alignItems="center">
-                  <Heading as="h1" size="6xl" isTruncated>Animalia.do</Heading>
+                  <Heading as="h1" size="lg" isTruncated>Firulais.org</Heading>
                 </Flex>
               </Link>
             </NextLink>
