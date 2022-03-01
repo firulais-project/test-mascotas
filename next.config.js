@@ -1,6 +1,6 @@
 module.exports = {
   env: {
-    api_url: 'http://localhost:8080/api',
-    breed: 'e6a0dae-2bf6-4884-8f9e-7852601867df'
+    api_url: 'https://animalia-dev-api.herokuapp.com/api',
+    breed: '0f7dc128-1f3c-4000-bfba-9f6e11c3f84c'
   },
 };
